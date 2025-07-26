@@ -3,8 +3,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
 import { getDoubanCategories } from '@/lib/douban.client';
 import { DoubanItem } from '@/lib/types';
@@ -34,8 +33,8 @@ function DoubanPageClient() {
   });
   const [secondarySelection, setSecondarySelection] = useState<string>(() => {
     if (type === 'movie') return '全部';
-    if (type === 'tv') return 'tv';
-    if (type === 'show') return 'show';
+    if (type === 'tv') return 'tv_korean';
+    if (type === 'show') return 'show_foreign';
     return '全部';
   });
 
@@ -63,10 +62,10 @@ function DoubanPageClient() {
       setSecondarySelection('全部');
     } else if (type === 'tv') {
       setPrimarySelection('');
-      setSecondarySelection('tv');
+      setSecondarySelection('tv_korean');
     } else if (type === 'show') {
       setPrimarySelection('');
-      setSecondarySelection('show');
+      setSecondarySelection('show_foreign');
     } else {
       setPrimarySelection('');
       setSecondarySelection('全部');

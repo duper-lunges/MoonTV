@@ -15,7 +15,7 @@ interface DoubanApiResponse {
 async function fetchDoubanData(url: string): Promise<DoubanApiResponse> {
   // 添加超时控制
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
 
   // 设置请求选项，包括信号和头部
   const fetchOptions = {
