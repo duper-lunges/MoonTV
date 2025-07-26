@@ -1082,7 +1082,7 @@ function PlayPageClient() {
         autoSize: false,
         autoMini: false,
         screenshot: false,
-        setting: false,
+        setting: true,
         loop: false,
         flip: false,
         playbackRate: true,
