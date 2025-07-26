@@ -760,6 +760,20 @@ function PlayPageClient() {
     }
   };
 
+  const handleRewind = () => {
+    if (artPlayerRef.current && artPlayerRef.current.currentTime > 5) {
+      artPlayerRef.current.currentTime -= 10;
+    }
+  };
+
+  const handleFastForward = () => {
+    if (
+      artPlayerRef.current &&
+      artPlayerRef.current.currentTime < artPlayerRef.current.duration - 5
+    ) {
+      artPlayerRef.current.currentTime += 10;
+    }
+  };
   // ---------------------------------------------------------------------------
   // 键盘快捷键
   // ---------------------------------------------------------------------------
@@ -792,21 +806,14 @@ function PlayPageClient() {
 
     // 左箭头 = 快退
     if (!e.altKey && e.key === 'ArrowLeft') {
-      if (artPlayerRef.current && artPlayerRef.current.currentTime > 5) {
-        artPlayerRef.current.currentTime -= 10;
-        e.preventDefault();
-      }
+      handleRewind();
+      e.preventDefault();
     }
 
     // 右箭头 = 快进
     if (!e.altKey && e.key === 'ArrowRight') {
-      if (
-        artPlayerRef.current &&
-        artPlayerRef.current.currentTime < artPlayerRef.current.duration - 5
-      ) {
-        artPlayerRef.current.currentTime += 10;
-        e.preventDefault();
-      }
+      handleFastForward();
+      e.preventDefault();
     }
 
     // 上箭头 = 音量+
@@ -1188,10 +1195,55 @@ function PlayPageClient() {
           {
             position: 'left',
             index: 13,
-            html: '<i class="art-icon flex"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" fill="currentColor"/></svg></i>',
+            html: '<button class="material-icons art-control">skip_previous</button>',
+            tooltip: '播放上一集',
+            click: function () {
+              handlePreviousEpisode();
+            },
+          },
+          {
+            position: 'left',
+            index: 14,
+            html: '<button class="material-icons art-control">skip_next</button>',
             tooltip: '播放下一集',
             click: function () {
               handleNextEpisode();
+            },
+          },
+          {
+            position: 'right',
+            index: 15,
+            html: '<button class="material-icons art-control">fast_rewind</button>',
+            tooltip: 'Rewind',
+            click: function () {
+              handleRewind();
+            },
+          },
+          {
+            position: 'right',
+            index: 16,
+            html: '<button class="material-icons art-control">fast_forward</button>',
+            tooltip: 'Forward',
+            click: function () {
+              handleFastForward();
+            },
+          },
+          {
+            position: 'right',
+            index: 17,
+            html: '<button class="material-icons art-control">speed</button>',
+            tooltip: 'Speed',
+            click: function () {
+              if (artPlayerRef.current) {
+                artPlayerRef.current.playbackRate += 0.25;
+                if (artPlayerRef.current.playbackRate > 2) {
+                  artPlayerRef.current.playbackRate = 1;
+                }
+                window.localStorage.setItem(
+                  'automagic-playrate',
+                  artPlayerRef.current.playbackRate
+                );
+              }
             },
           },
         ],
@@ -1231,6 +1283,12 @@ function PlayPageClient() {
             artPlayerRef.current.volume = lastVolumeRef.current;
           }
           artPlayerRef.current.notice.show = '';
+          const playrate = window.localStorage.getItem('automagic-playrate');
+          if (playrate) {
+            artPlayerRef.current.playbackRate = parseFloat(playrate);
+          }
+          console.log('playrate', playrate);
+          artPlayerRef.current.play();
         }, 0);
 
         // 隐藏换源加载状态

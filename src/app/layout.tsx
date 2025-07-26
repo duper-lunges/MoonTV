@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 
-import './globals.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import './globals.css';
 
 import { getConfig } from '@/lib/config';
 
@@ -68,6 +68,11 @@ export default async function RootLayout({
   return (
     <html lang='zh-CN' suppressHydrationWarning>
       <head>
+        {/* Material Icons from Google Fonts */}
+        <link
+          href='https://fonts.googleapis.com/icon?family=Material+Icons'
+          rel='stylesheet'
+        />
         {/* 将配置序列化后直接写入脚本，浏览器端可通过 window.RUNTIME_CONFIG 获取 */}
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script
